@@ -1,4 +1,6 @@
 import React, {useState} from "react";
+import {Button, IconButton, TextField} from "@mui/material";
+import {AddCircleOutline, ControlPoint, Delete} from "@mui/icons-material";
 
 export type AddItemFormProps = {
     addItem: (newTaskTitle: string) => void
@@ -11,11 +13,11 @@ export const AddItemForm: React.FC<AddItemFormProps> = (props) => {
 
     const [error,
         setError]
-        = useState(false)
+        = useState<string>("")
 
     const inpOnChangeHandler = (ev: React.ChangeEvent<HTMLInputElement>) => {
         setInpValue(ev.currentTarget.value)
-        setError(false)
+        setError("")
     }
 
     const enterInpOnKeyDownHandler = (ev: React.KeyboardEvent<HTMLInputElement>) => {
@@ -23,7 +25,7 @@ export const AddItemForm: React.FC<AddItemFormProps> = (props) => {
             props.addItem(inpValue)
             setInpValue("")
         } else {
-            setError(true)
+            setError("Title is required!!!")
         }
     }
 
@@ -32,17 +34,27 @@ export const AddItemForm: React.FC<AddItemFormProps> = (props) => {
             props.addItem(inpValue)
             setInpValue("")
         } else {
-            setError(true)
+            setError("Title is required!!!")
         }
     }
 
+
     return (<div>
-        <input value={inpValue}
-               onChange={inpOnChangeHandler}
-               onKeyDown={enterInpOnKeyDownHandler}
-               className={error ? "error" : ""}
+        <TextField variant={"outlined"}
+                   label={"Type Value"}
+                   value={inpValue}
+                   onChange={inpOnChangeHandler}
+                   onKeyDown={enterInpOnKeyDownHandler}
+                   className={error ? "error" : ""}
+                   error={!!error}
+                   helperText={error}
         />
-        <button onClick={() => AddBtnOnClickHandler()}>+</button>
-        {error && <div className="error-message">Title is required!</div>}
+        <IconButton
+            color={"primary"}
+            onClick={() => AddBtnOnClickHandler()}
+        >
+            <ControlPoint/>
+        </IconButton>
+        {/*{error && <div className="error-message">Title is required!</div>}*/}
     </div>)
 }
